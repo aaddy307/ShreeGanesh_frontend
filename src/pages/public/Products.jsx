@@ -5,6 +5,17 @@ import ProductFilters from '../../components/product/ProductFilters';
 import SearchBar from '../../components/common/SearchBar';
 import useProducts from '../../hooks/useProducts';
 
+const CATEGORIES = [
+  { name: 'All', icon: '✨' },
+  { name: 'Mobile Cover', icon: '📱' },
+  { name: 'Charger', icon: '🔌' },
+  { name: 'Cable', icon: '🔗' },
+  { name: 'Earphone', icon: '🎧' },
+  { name: 'Power Bank', icon: '🔋' },
+  { name: 'Tempered Glass', icon: '🛡️' },
+  { name: 'Other', icon: '📦' },
+];
+
 const Products = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [category, setCategory] = useState(searchParams.get('category') || 'All');
@@ -42,50 +53,84 @@ const Products = () => {
   };
 
   return (
-    <main className="py-12">
-      <div className="container-custom">
-        <h1 className={`section-title text-center mb-4 transition-all duration-500 ${visible ? 'opacity-100' : 'opacity-0'}`}>
-          Our Products
-        </h1>
-        <p className={`section-subtitle text-center transition-all duration-500 delay-100 ${visible ? 'opacity-100' : 'opacity-0'}`}>
-          Browse our wide range of electronic accessories
-        </p>
-
-        <div className="flex flex-col lg:flex-row gap-8 mb-8">
-          <div className="lg:w-1/4">
-            <div className={`bg-white rounded-xl shadow-md p-6 sticky top-24 transition-all duration-500 delay-200 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-              <h3 className="font-semibold text-primary mb-4">Categories</h3>
-              <ProductFilters
-                selectedCategory={category}
-                onCategoryChange={handleCategoryChange}
-              />
+    <main className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
+      <div className="relative bg-gradient-to-r from-navy via-navy to-secondary overflow-hidden">
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute top-0 left-0 w-72 h-72 bg-accent rounded-full blur-3xl"></div>
+          <div className="absolute bottom-0 right-0 w-96 h-96 bg-secondary rounded-full blur-3xl"></div>
+        </div>
+        <div className="container-custom py-16 relative z-10">
+          <h1 className={`text-4xl md:text-5xl font-bold text-white text-center mb-4 transition-all duration-700 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+            Our Products
+          </h1>
+          <p className={`text-gray-300 text-center text-lg transition-all duration-700 delay-200 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+            Discover premium mobile accessories at unbeatable prices
+          </p>
+          <div className={`flex justify-center mt-8 transition-all duration-700 delay-300 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+            <div className="bg-white/10 backdrop-blur-sm rounded-full px-6 py-3 flex items-center gap-2">
+              <span className="text-white text-sm">🎉</span>
+              <span className="text-white text-sm font-medium">Free delivery on orders above ₹500</span>
             </div>
           </div>
+        </div>
+      </div>
 
-          <div className={`lg:w-3/4 transition-all duration-500 delay-300 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-            <div className="mb-6">
-              <SearchBar onSearch={handleSearch} placeholder="Search products..." />
+      <div className="container-custom -mt-8 relative z-20">
+        <div className={`bg-white rounded-2xl shadow-xl p-6 transition-all duration-500 delay-100 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+          <div className="flex flex-col lg:flex-row gap-8">
+            <div className="lg:w-1/4">
+              <div className="lg:sticky lg:top-8">
+                <h3 className="font-bold text-navy text-lg mb-4 flex items-center gap-2">
+                  <span className="w-1 h-6 bg-accent rounded-full"></span>
+                  Categories
+                </h3>
+                <ProductFilters
+                  selectedCategory={category}
+                  onCategoryChange={handleCategoryChange}
+                />
+              </div>
             </div>
 
-            <ProductGrid products={products} loading={loading} columns={3} />
-
-            {pagination.pages > 1 && (
-              <div className="flex justify-center gap-2 mt-8">
-                {Array.from({ length: pagination.pages }, (_, i) => i + 1).map((pageNum) => (
-                  <button
-                    key={pageNum}
-                    onClick={() => setPage(pageNum)}
-                    className={`px-4 py-2 rounded-lg font-medium transition-all hover:scale-105 ${
-                      pagination.page === pageNum
-                        ? 'bg-secondary text-white'
-                        : 'bg-white text-gray-700 border border-gray-300 hover:border-secondary hover:bg-gray-50'
-                    }`}
-                  >
-                    {pageNum}
-                  </button>
-                ))}
+            <div className="lg:w-3/4">
+              <div className="mb-6">
+                <SearchBar onSearch={handleSearch} placeholder="Search products..." />
               </div>
-            )}
+
+              <div className="flex items-center justify-between mb-6">
+                <p className="text-gray-600">
+                  {loading ? 'Loading...' : `${products.length} products found`}
+                </p>
+                <div className="flex items-center gap-2">
+                  <span className="text-sm text-gray-500">Sort by:</span>
+                  <select className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-secondary focus:border-transparent">
+                    <option>Featured</option>
+                    <option>Price: Low to High</option>
+                    <option>Price: High to Low</option>
+                    <option>Newest</option>
+                  </select>
+                </div>
+              </div>
+
+              <ProductGrid products={products} loading={loading} columns={3} />
+
+              {pagination.pages > 1 && (
+                <div className="flex justify-center gap-2 mt-12">
+                  {Array.from({ length: pagination.pages }, (_, i) => i + 1).map((pageNum) => (
+                    <button
+                      key={pageNum}
+                      onClick={() => setPage(pageNum)}
+                      className={`w-10 h-10 rounded-full font-medium transition-all hover:scale-110 ${
+                        pagination.page === pageNum
+                          ? 'bg-navy text-white shadow-lg'
+                          : 'bg-white text-gray-700 border border-gray-300 hover:border-navy hover:bg-navy hover:text-white'
+                      }`}
+                    >
+                      {pageNum}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>

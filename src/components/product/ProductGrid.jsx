@@ -1,5 +1,15 @@
 import ProductCard from './ProductCard';
-import Loader from '../common/Loader';
+
+const SkeletonCard = () => (
+  <div className="bg-white rounded-2xl overflow-hidden shadow-md animate-pulse">
+    <div className="aspect-square bg-gray-200"></div>
+    <div className="p-4 space-y-3">
+      <div className="h-4 bg-gray-200 rounded w-1/3"></div>
+      <div className="h-5 bg-gray-200 rounded w-3/4"></div>
+      <div className="h-6 bg-gray-200 rounded w-1/4"></div>
+    </div>
+  </div>
+);
 
 const ProductGrid = ({ products, loading, columns = 4 }) => {
   const gridCols = {
@@ -9,21 +19,35 @@ const ProductGrid = ({ products, loading, columns = 4 }) => {
   };
 
   if (loading) {
-    return <Loader />;
+    return (
+      <div className={`grid ${gridCols[columns] || gridCols[4]} gap-6`}>
+        {Array.from({ length: 6 }).map((_, i) => (
+          <SkeletonCard key={i} />
+        ))}
+      </div>
+    );
   }
 
   if (products.length === 0) {
     return (
-      <div className="text-center py-12">
-        <p className="text-gray-500 text-lg">No products found</p>
+      <div className="text-center py-16">
+        <div className="text-6xl mb-4">🔍</div>
+        <h3 className="text-xl font-bold text-navy mb-2">No products found</h3>
+        <p className="text-gray-500">Try adjusting your search or category</p>
       </div>
     );
   }
 
   return (
     <div className={`grid ${gridCols[columns] || gridCols[4]} gap-6`}>
-      {products.map((product) => (
-        <ProductCard key={product._id} product={product} />
+      {products.map((product, index) => (
+        <div
+          key={product._id}
+          className="animate-scaleIn"
+          style={{ animationDelay: `${index * 50}ms` }}
+        >
+          <ProductCard product={product} />
+        </div>
       ))}
     </div>
   );

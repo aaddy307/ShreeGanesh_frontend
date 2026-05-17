@@ -3,8 +3,8 @@ import { BUSINESS_INFO } from '../../utils/constants';
 
 const Footer = () => {
   return (
-    <footer className="bg-navy text-gray-300">
-      <div className="container-custom py-12">
+    <footer className="bg-navy text-gray-300 mt-20">
+      <div className="container-custom py-16">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div>
             <div className="flex items-center gap-2 mb-4">
