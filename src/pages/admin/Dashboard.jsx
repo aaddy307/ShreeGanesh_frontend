@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import AdminSidebar from '../../components/admin/AdminSidebar';
 import productService from '../../services/productService';
+import { Package, Plus, List, Menu, ArrowLeft } from 'lucide-react';
 
 const Dashboard = () => {
   const [productCount, setProductCount] = useState(0);
@@ -28,12 +29,11 @@ const Dashboard = () => {
       <AdminSidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
       
       <div className="flex-1 p-4 md:p-8">
-        {/* Mobile menu button */}
         <button 
           onClick={() => setSidebarOpen(true)}
           className="lg:hidden fixed top-20 right-4 z-30 bg-navy text-white p-2 rounded-lg shadow-lg"
         >
-          ☰
+          <Menu className="w-6 h-6" />
         </button>
 
         <div className="max-w-4xl mx-auto">
@@ -48,8 +48,8 @@ const Dashboard = () => {
                     {loading ? '...' : productCount}
                   </p>
                 </div>
-                <div className="w-12 h-12 md:w-16 md:h-16 bg-secondary/10 rounded-full flex items-center justify-center text-2xl md:text-3xl">
-                  📦
+                <div className="w-12 h-12 md:w-16 md:h-16 bg-secondary/10 rounded-full flex items-center justify-center text-accent">
+                  <Package className="w-6 h-6 md:w-8 md:h-8" />
                 </div>
               </div>
             </div>
@@ -62,7 +62,7 @@ const Dashboard = () => {
                 to="/admin/products/add"
                 className="flex items-center gap-3 md:gap-4 p-3 md:p-4 border-2 border-gray-200 rounded-lg hover:border-accent hover:bg-orange-50 transition-colors"
               >
-                <span className="text-xl md:text-2xl">➕</span>
+                <Plus className="w-6 h-6 text-accent" />
                 <div>
                   <p className="font-semibold text-primary text-sm md:text-base">Add New Product</p>
                   <p className="text-sm text-gray-500 hidden sm:block">Add a new product to your catalog</p>
@@ -72,7 +72,7 @@ const Dashboard = () => {
                 to="/admin/products/manage"
                 className="flex items-center gap-3 md:gap-4 p-3 md:p-4 border-2 border-gray-200 rounded-lg hover:border-secondary hover:bg-blue-50 transition-colors"
               >
-                <span className="text-xl md:text-2xl">📋</span>
+                <List className="w-6 h-6 text-secondary" />
                 <div>
                   <p className="font-semibold text-primary text-sm md:text-base">Manage Products</p>
                   <p className="text-sm text-gray-500 hidden sm:block">View, edit, or delete products</p>
@@ -84,9 +84,10 @@ const Dashboard = () => {
           <div className="mt-6 md:mt-8">
             <Link
               to="/"
-              className="text-secondary hover:underline text-sm md:text-base"
+              className="inline-flex items-center gap-2 text-secondary hover:underline text-sm md:text-base"
             >
-              ← Back to Website
+              <ArrowLeft className="w-4 h-4" />
+              Back to Website
             </Link>
           </div>
         </div>

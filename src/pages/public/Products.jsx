@@ -4,17 +4,7 @@ import ProductGrid from '../../components/product/ProductGrid';
 import ProductFilters from '../../components/product/ProductFilters';
 import SearchBar from '../../components/common/SearchBar';
 import useProducts from '../../hooks/useProducts';
-
-const CATEGORIES = [
-  { name: 'All', icon: '✨' },
-  { name: 'Mobile Cover', icon: '📱' },
-  { name: 'Charger', icon: '🔌' },
-  { name: 'Cable', icon: '🔗' },
-  { name: 'Earphone', icon: '🎧' },
-  { name: 'Power Bank', icon: '🔋' },
-  { name: 'Tempered Glass', icon: '🛡️' },
-  { name: 'Other', icon: '📦' },
-];
+import { Gift } from 'lucide-react';
 
 const Products = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -68,7 +58,7 @@ const Products = () => {
           </p>
           <div className={`flex justify-center mt-8 transition-all duration-700 delay-300 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
             <div className="bg-white/10 backdrop-blur-sm rounded-full px-6 py-3 flex items-center gap-2">
-              <span className="text-white text-sm">🎉</span>
+              <Gift className="w-5 h-5 text-white" />
               <span className="text-white text-sm font-medium">Free delivery on orders above ₹500</span>
             </div>
           </div>

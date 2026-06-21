@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import useAuth from '../../hooks/useAuth';
+import { LayoutDashboard, Plus, Package, X, Menu } from 'lucide-react';
 
 const AdminSidebar = ({ isOpen, onClose }) => {
   const location = useLocation();
@@ -8,9 +9,9 @@ const AdminSidebar = ({ isOpen, onClose }) => {
   const navigate = useNavigate();
 
   const menuItems = [
-    { name: 'Dashboard', path: '/admin/dashboard', icon: '📊' },
-    { name: 'Add Product', path: '/admin/products/add', icon: '➕' },
-    { name: 'Manage Products', path: '/admin/products/manage', icon: '📦' },
+    { name: 'Dashboard', path: '/admin/dashboard', icon: LayoutDashboard },
+    { name: 'Add Product', path: '/admin/products/add', icon: Plus },
+    { name: 'Manage Products', path: '/admin/products/manage', icon: Package },
   ];
 
   const isActive = (path) => location.pathname === path;
@@ -22,7 +23,6 @@ const AdminSidebar = ({ isOpen, onClose }) => {
 
   return (
     <>
-      {/* Overlay for mobile */}
       {isOpen && (
         <div 
           className="fixed inset-0 bg-black/50 z-40 lg:hidden"
@@ -30,7 +30,6 @@ const AdminSidebar = ({ isOpen, onClose }) => {
         />
       )}
       
-      {/* Sidebar */}
       <div className={`fixed lg:static inset-y-0 left-0 z-50 w-64 bg-navy text-white transform transition-transform duration-300 lg:transform-none ${isOpen ? 'translate-x-0' : '-translate-x-full'} lg:w-64 lg:min-h-screen p-6 flex flex-col`}>
         <div className="flex items-center justify-between mb-8 lg:block">
           <div>
@@ -39,9 +38,9 @@ const AdminSidebar = ({ isOpen, onClose }) => {
           </div>
           <button 
             onClick={onClose}
-            className="lg:hidden text-white text-xl"
+            className="lg:hidden text-white"
           >
-            ✕
+            <X className="w-6 h-6" />
           </button>
         </div>
 
@@ -51,13 +50,13 @@ const AdminSidebar = ({ isOpen, onClose }) => {
               key={item.name}
               to={item.path}
               onClick={onClose}
-              className={`block px-4 py-3 rounded-lg transition-colors ${
+              className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
                 isActive(item.path)
                   ? 'bg-accent text-white'
                   : 'text-gray-300 hover:bg-white/10'
               }`}
             >
-              <span className="mr-2">{item.icon}</span>
+              <item.icon className="w-5 h-5" />
               {item.name}
             </Link>
           ))}

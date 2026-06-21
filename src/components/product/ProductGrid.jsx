@@ -1,4 +1,5 @@
 import ProductCard from './ProductCard';
+import { Search } from 'lucide-react';
 
 const SkeletonCard = () => (
   <div className="bg-white rounded-2xl overflow-hidden shadow-md animate-pulse">
@@ -31,7 +32,7 @@ const ProductGrid = ({ products, loading, columns = 4 }) => {
   if (products.length === 0) {
     return (
       <div className="text-center py-16">
-        <div className="text-6xl mb-4">🔍</div>
+        <Search className="w-16 h-16 mx-auto mb-4 text-gray-300" />
         <h3 className="text-xl font-bold text-navy mb-2">No products found</h3>
         <p className="text-gray-500">Try adjusting your search or category</p>
       </div>

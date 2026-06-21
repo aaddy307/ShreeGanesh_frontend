@@ -4,6 +4,7 @@ import AdminSidebar from '../../components/admin/AdminSidebar';
 import ProductForm from '../../components/admin/ProductForm';
 import productService from '../../services/productService';
 import Loader from '../../components/common/Loader';
+import { Menu, ArrowLeft } from 'lucide-react';
 
 const EditProduct = () => {
   const { id } = useParams();
@@ -79,16 +80,17 @@ const EditProduct = () => {
           onClick={() => setSidebarOpen(true)}
           className="lg:hidden fixed top-20 right-4 z-30 bg-navy text-white p-2 rounded-lg shadow-lg"
         >
-          ☰
+          <Menu className="w-6 h-6" />
         </button>
 
         <div className="max-w-2xl mx-auto">
           <div className="flex items-center gap-2 md:gap-4 mb-6 md:mb-8">
             <Link
               to="/admin/products/manage"
-              className="text-gray-500 hover:text-secondary text-sm md:text-base"
+              className="text-gray-500 hover:text-secondary text-sm md:text-base flex items-center gap-1"
             >
-              ← Back
+              <ArrowLeft className="w-4 h-4" />
+              Back
             </Link>
             <h1 className="text-2xl md:text-3xl font-bold text-primary">Edit Product</h1>
           </div>

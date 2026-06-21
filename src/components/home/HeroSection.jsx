@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { BUSINESS_INFO } from '../../utils/constants';
+import { ShoppingCart, MessageCircle, Package, Tag, Truck, Star } from 'lucide-react';
 
 const HeroSection = () => {
   const [loaded, setLoaded] = useState(false);
@@ -8,6 +9,13 @@ const HeroSection = () => {
   useEffect(() => {
     setLoaded(true);
   }, []);
+
+  const stats = [
+    { icon: Package, label: '500+ Products', value: '' },
+    { icon: Tag, label: '50+ Brands', value: '' },
+    { icon: Truck, label: 'Free Delivery', value: 'Above ₹500' },
+    { icon: Star, label: '4.9 Rating', value: '500+ Reviews' },
+  ];
 
   return (
     <section className="relative min-h-[85vh] flex items-center overflow-hidden">
@@ -35,7 +43,7 @@ const HeroSection = () => {
               <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
             </span>
             <span className="text-white font-medium">Shop online or via WhatsApp</span>
-            <span className="text-2xl">🛒</span>
+            <ShoppingCart className="w-5 h-5 text-white" />
           </div>
 
           <h1 
@@ -78,23 +86,18 @@ const HeroSection = () => {
               rel="noopener noreferrer"
               className="group bg-green-500 text-white px-10 py-5 rounded-2xl font-bold text-lg flex items-center justify-center gap-3 hover:bg-green-600 transition-all hover:scale-105 hover:shadow-2xl hover:shadow-green-500/40"
             >
-              <span className="text-2xl">💬</span>
+              <MessageCircle className="w-6 h-6" />
               <span>Order via WhatsApp</span>
             </a>
           </div>
 
           <div className={`grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto transition-all duration-700 delay-500 ${loaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-            {[
-              { icon: '📦', label: '500+ Products', value: '' },
-              { icon: '🏷️', label: '50+ Brands', value: '' },
-              { icon: '🚚', label: 'Free Delivery', value: 'Above ₹500' },
-              { icon: '⭐', label: '4.9 Rating', value: '500+ Reviews' },
-            ].map((item, index) => (
+            {stats.map((item, index) => (
               <div 
                 key={index}
                 className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-4 hover:bg-white/10 transition-all hover:scale-105"
               >
-                <div className="text-3xl mb-2">{item.icon}</div>
+                <item.icon className="w-8 h-8 mx-auto mb-2 text-accent" />
                 <p className="text-white font-bold">{item.label}</p>
                 {item.value && <p className="text-gray-400 text-sm">{item.value}</p>}
               </div>

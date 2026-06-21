@@ -1,6 +1,21 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { BUSINESS_INFO, WHY_CHOOSE_US } from '../../utils/constants';
+import { MapPin, Phone, MessageCircle, CheckCircle, DollarSign, Target, Clock, Smartphone, Zap, Headphones, Battery, ArrowRight } from 'lucide-react';
+
+const iconMap = {
+  '✅': CheckCircle,
+  '💰': DollarSign,
+  '🎯': Target,
+  '💬': MessageCircle,
+};
+
+const stats = [
+  { icon: Smartphone, label: 'Mobile Covers', value: '200+' },
+  { icon: Zap, label: 'Chargers', value: '50+' },
+  { icon: Headphones, label: 'Earphones', value: '80+' },
+  { icon: Battery, label: 'Power Banks', value: '30+' },
+];
 
 const About = () => {
   const [loaded, setLoaded] = useState(false);
@@ -31,7 +46,7 @@ const About = () => {
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
               <div className={`inline-flex items-center gap-2 bg-accent/10 text-accent px-4 py-2 rounded-full text-sm font-semibold mb-6 transition-all duration-700 ${loaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-                <span>🏪</span>
+                <MapPin className="w-4 h-4" />
                 <span>Established in Ambernath</span>
               </div>
               
@@ -59,7 +74,7 @@ const About = () => {
                   className="inline-flex items-center gap-2 bg-accent text-white px-6 py-3 rounded-xl font-semibold hover:bg-orange-600 transition-all hover:scale-105"
                 >
                   <span>Explore Products</span>
-                  <span>→</span>
+                  <ArrowRight className="w-5 h-5" />
                 </Link>
               </div>
             </div>
@@ -68,14 +83,9 @@ const About = () => {
               <div className="absolute inset-0 bg-gradient-to-r from-accent to-secondary rounded-3xl blur-2xl opacity-20"></div>
               <div className="relative bg-gradient-to-br from-navy to-primary rounded-3xl p-8 text-white">
                 <div className="grid grid-cols-2 gap-6">
-                  {[
-                    { icon: '📱', label: 'Mobile Covers', value: '200+' },
-                    { icon: '🔌', label: 'Chargers', value: '50+' },
-                    { icon: '🎧', label: 'Earphones', value: '80+' },
-                    { icon: '🔋', label: 'Power Banks', value: '30+' },
-                  ].map((item, index) => (
+                  {stats.map((item, index) => (
                     <div key={index} className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 text-center hover:bg-white/20 transition-all hover:scale-105">
-                      <div className="text-4xl mb-3">{item.icon}</div>
+                      <item.icon className="w-8 h-8 mx-auto mb-3 text-accent" />
                       <p className="text-2xl font-bold">{item.value}</p>
                       <p className="text-gray-300 text-sm">{item.label}</p>
                     </div>
@@ -95,19 +105,22 @@ const About = () => {
           </div>
           
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {WHY_CHOOSE_US.map((item, index) => (
-              <div 
-                key={index}
-                className={`bg-gradient-to-br from-gray-50 to-white rounded-2xl p-6 text-center hover:shadow-xl transition-all hover:-translate-y-2 ${loaded ? 'animate-fadeInUp' : 'opacity-0'}`}
-                style={{ animationDelay: `${index * 100}ms` }}
-              >
-                <div className="w-16 h-16 bg-accent/10 rounded-2xl flex items-center justify-center text-3xl mx-auto mb-4">
-                  {item.icon}
+            {WHY_CHOOSE_US.map((item, index) => {
+              const IconComponent = iconMap[item.icon] || CheckCircle;
+              return (
+                <div 
+                  key={index}
+                  className={`bg-gradient-to-br from-gray-50 to-white rounded-2xl p-6 text-center hover:shadow-xl transition-all hover:-translate-y-2 ${loaded ? 'animate-fadeInUp' : 'opacity-0'}`}
+                  style={{ animationDelay: `${index * 100}ms` }}
+                >
+                  <div className="w-12 h-12 bg-accent/10 rounded-2xl flex items-center justify-center mx-auto mb-4 text-accent">
+                    <IconComponent className="w-6 h-6" />
+                  </div>
+                  <h3 className="font-bold text-navy text-lg mb-2">{item.title}</h3>
+                  <p className="text-gray-600 text-sm">{item.description}</p>
                 </div>
-                <h3 className="font-bold text-navy text-lg mb-2">{item.title}</h3>
-                <p className="text-gray-600 text-sm">{item.description}</p>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
 
@@ -120,8 +133,8 @@ const About = () => {
               </p>
               <div className="space-y-4">
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center text-xl">
-                    📍
+                  <div className="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center">
+                    <MapPin className="w-5 h-5 text-accent" />
                   </div>
                   <div>
                     <p className="font-semibold">Address</p>
@@ -129,8 +142,8 @@ const About = () => {
                   </div>
                 </div>
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center text-xl">
-                    📞
+                  <div className="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center">
+                    <Phone className="w-5 h-5 text-accent" />
                   </div>
                   <div>
                     <p className="font-semibold">Phone</p>
@@ -138,8 +151,8 @@ const About = () => {
                   </div>
                 </div>
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center text-xl">
-                    💬
+                  <div className="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center">
+                    <MessageCircle className="w-5 h-5 text-accent" />
                   </div>
                   <div>
                     <p className="font-semibold">WhatsApp</p>
@@ -157,7 +170,10 @@ const About = () => {
             </div>
             
             <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6">
-              <h3 className="font-bold text-xl mb-4">🕐 Store Hours</h3>
+              <h3 className="font-bold text-xl mb-4 flex items-center gap-2">
+                <Clock className="w-5 h-5" />
+                Store Hours
+              </h3>
               <div className="space-y-2 text-gray-300">
                 <p>Monday - Saturday: 9:00 AM - 11:00 PM</p>
                 <p>Sunday: 9:00 AM - 11:00 PM</p>

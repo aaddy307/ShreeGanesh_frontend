@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { BUSINESS_INFO } from '../../utils/constants';
+import { MapPin, Phone, MessageCircle } from 'lucide-react';
 
 const Footer = () => {
   return (
@@ -26,7 +27,6 @@ const Footer = () => {
               <li><Link to="/about" className="hover:text-accent transition-colors">About</Link></li>
               <li><Link to="/products" className="hover:text-accent transition-colors">Products</Link></li>
               <li><Link to="/contact" className="hover:text-accent transition-colors">Contact</Link></li>
-              <li><Link to="/admin/login" className="hover:text-accent transition-colors text-orange-400">Admin Login</Link></li>
             </ul>
           </div>
 
@@ -34,17 +34,17 @@ const Footer = () => {
             <h3 className="text-lg font-semibold text-white mb-4">Contact Us</h3>
             <ul className="space-y-2 text-sm">
               <li className="flex items-start gap-2">
-                <span>📍</span>
+                <MapPin className="w-4 h-4 mt-1 flex-shrink-0 text-accent" />
                 <span>{BUSINESS_INFO.address}</span>
               </li>
               <li className="flex items-center gap-2">
-                <span>📞</span>
+                <Phone className="w-4 h-4 flex-shrink-0 text-accent" />
                 <a href={`tel:${BUSINESS_INFO.phone}`} className="hover:text-accent transition-colors">
                   {BUSINESS_INFO.phone}
                 </a>
               </li>
               <li className="flex items-center gap-2">
-                <span>💬</span>
+                <MessageCircle className="w-4 h-4 flex-shrink-0 text-accent" />
                 <a
                   href={`https://wa.me/${BUSINESS_INFO.whatsapp}`}
                   target="_blank"

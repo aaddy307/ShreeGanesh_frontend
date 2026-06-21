@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import productService from '../../services/productService';
 import ProductDetailsCard from '../../components/product/ProductDetailsCard';
 import Loader from '../../components/common/Loader';
+import { ArrowLeft } from 'lucide-react';
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -44,8 +45,9 @@ const ProductDetails = () => {
     <main className="py-12">
       <div className="container-custom">
         <div className="mb-6">
-          <Link to="/products" className="text-gray-600 hover:text-secondary">
-            ← Back to Products
+          <Link to="/products" className="text-gray-600 hover:text-secondary flex items-center gap-1">
+            <ArrowLeft className="w-4 h-4" />
+            Back to Products
           </Link>
         </div>
         <ProductDetailsCard product={product} />

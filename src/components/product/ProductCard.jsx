@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { formatPrice, getImageUrl } from '../../utils/helpers';
 import { BUSINESS_INFO } from '../../utils/constants';
+import { MessageCircle } from 'lucide-react';
 
 const ProductCard = ({ product }) => {
   const handleWhatsAppOrder = (e) => {
@@ -34,7 +35,7 @@ const ProductCard = ({ product }) => {
             onClick={handleWhatsAppOrder}
             className="w-full bg-green-500 hover:bg-green-600 text-white font-semibold py-3 rounded-xl flex items-center justify-center gap-2 transition-colors"
           >
-            <span>💬</span>
+            <MessageCircle className="w-5 h-5" />
             Order on WhatsApp
           </button>
         </div>

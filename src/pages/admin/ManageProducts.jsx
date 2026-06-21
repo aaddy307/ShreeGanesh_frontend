@@ -4,6 +4,7 @@ import AdminSidebar from '../../components/admin/AdminSidebar';
 import ProductTable from '../../components/admin/ProductTable';
 import productService from '../../services/productService';
 import Loader from '../../components/common/Loader';
+import { Menu } from 'lucide-react';
 
 const ManageProducts = () => {
   const [products, setProducts] = useState([]);
@@ -52,7 +53,7 @@ const ManageProducts = () => {
           onClick={() => setSidebarOpen(true)}
           className="lg:hidden fixed top-20 right-4 z-30 bg-navy text-white p-2 rounded-lg shadow-lg"
         >
-          ☰
+          <Menu className="w-6 h-6" />
         </button>
 
         <div className="max-w-6xl mx-auto">

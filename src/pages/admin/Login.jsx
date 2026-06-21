@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import useAuth from '../../hooks/useAuth';
 import { validateLoginForm } from '../../utils/validations';
 import Loader from '../../components/common/Loader';
+import { ArrowLeft } from 'lucide-react';
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -103,8 +104,9 @@ const Login = () => {
           </form>
 
           <div className="mt-6 text-center">
-            <a href="/" className="text-secondary hover:underline text-sm">
-              ← Back to Website
+            <a href="/" className="text-secondary hover:underline text-sm flex items-center justify-center gap-1">
+              <ArrowLeft className="w-4 h-4" />
+              Back to Website
             </a>
           </div>
         </div>

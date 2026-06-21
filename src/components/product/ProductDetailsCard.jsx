@@ -1,7 +1,15 @@
-import { formatPrice, getImageUrl, getWhatsAppLink, getCallLink } from '../../utils/helpers';
+import { formatPrice, getImageUrl, getCallLink } from '../../utils/helpers';
 import WhatsAppButton from '../common/WhatsAppButton';
 
 const ProductDetailsCard = ({ product }) => {
+  if (!product) {
+    return (
+      <div className="bg-white rounded-xl shadow-lg p-8 text-center">
+        <p className="text-gray-500">Product not found</p>
+      </div>
+    );
+  }
+
   const whatsappMessage = `Hi, I'm interested in "${product.name}" (${formatPrice(product.price)}). Please share more details.`;
 
   return (
@@ -12,6 +20,7 @@ const ProductDetailsCard = ({ product }) => {
             src={getImageUrl(product.image)}
             alt={product.name}
             className="w-full h-full object-cover"
+            onError={(e) => { e.target.src = '/images/products/placeholder.jpg'; }}
           />
         </div>
         <div className="p-8 flex flex-col justify-center">

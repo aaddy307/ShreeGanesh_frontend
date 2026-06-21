@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { BUSINESS_INFO } from '../../utils/constants';
+import { MapPin, Phone, MessageCircle, MessageSquare, PhoneCall, Map, Clock, AlertCircle } from 'lucide-react';
 
 const Contact = () => {
   const [loaded, setLoaded] = useState(false);
@@ -28,16 +29,16 @@ const Contact = () => {
       <div className="container-custom -mt-12 relative z-20">
         <div className="grid lg:grid-cols-3 gap-8 mb-12">
           <div className={`bg-white rounded-2xl shadow-xl p-8 text-center hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 ${loaded ? 'animate-fadeInUp' : 'opacity-0'}`}>
-            <div className="w-16 h-16 bg-accent/10 rounded-2xl flex items-center justify-center text-3xl mx-auto mb-4">
-              📍
+            <div className="w-16 h-16 bg-accent/10 rounded-2xl flex items-center justify-center mx-auto mb-4 text-accent">
+              <MapPin className="w-8 h-8" />
             </div>
             <h3 className="font-bold text-navy text-lg mb-2">Visit Us</h3>
             <p className="text-gray-600">{BUSINESS_INFO.address}</p>
           </div>
 
           <div className={`bg-white rounded-2xl shadow-xl p-8 text-center hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 ${loaded ? 'animate-fadeInUp' : 'opacity-0'}`} style={{ animationDelay: '100ms' }}>
-            <div className="w-16 h-16 bg-accent/10 rounded-2xl flex items-center justify-center text-3xl mx-auto mb-4">
-              📞
+            <div className="w-16 h-16 bg-accent/10 rounded-2xl flex items-center justify-center mx-auto mb-4 text-accent">
+              <Phone className="w-8 h-8" />
             </div>
             <h3 className="font-bold text-navy text-lg mb-2">Call Us</h3>
             <a href={`tel:${BUSINESS_INFO.phone}`} className="text-gray-600 hover:text-accent font-semibold">
@@ -46,8 +47,8 @@ const Contact = () => {
           </div>
 
           <div className={`bg-white rounded-2xl shadow-xl p-8 text-center hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 ${loaded ? 'animate-fadeInUp' : 'opacity-0'}`} style={{ animationDelay: '200ms' }}>
-            <div className="w-16 h-16 bg-accent/10 rounded-2xl flex items-center justify-center text-3xl mx-auto mb-4">
-              💬
+            <div className="w-16 h-16 bg-accent/10 rounded-2xl flex items-center justify-center mx-auto mb-4 text-accent">
+              <MessageCircle className="w-8 h-8" />
             </div>
             <h3 className="font-bold text-navy text-lg mb-2">WhatsApp</h3>
             <a 
@@ -78,7 +79,7 @@ const Contact = () => {
                 rel="noopener noreferrer"
                 className="flex items-center justify-center gap-3 bg-green-500 text-white py-4 rounded-xl font-bold hover:bg-green-600 transition-all hover:scale-105 hover:shadow-lg hover:shadow-green-500/30"
               >
-                <span className="text-2xl">💬</span>
+                <MessageSquare className="w-6 h-6" />
                 <span>Chat on WhatsApp</span>
               </a>
               <div className="grid grid-cols-2 gap-4">
@@ -86,7 +87,7 @@ const Contact = () => {
                   href={`tel:${BUSINESS_INFO.phone}`}
                   className="flex items-center justify-center gap-2 bg-navy text-white py-3 rounded-xl font-semibold hover:bg-navy/90 transition-all hover:scale-105"
                 >
-                  <span>📞</span>
+                  <PhoneCall className="w-5 h-5" />
                   <span>Call Now</span>
                 </a>
                 <a 
@@ -95,7 +96,7 @@ const Contact = () => {
                   rel="noopener noreferrer"
                   className="flex items-center justify-center gap-2 bg-gray-100 text-navy py-3 rounded-xl font-semibold hover:bg-gray-200 transition-all hover:scale-105"
                 >
-                  <span>🗺️</span>
+                  <Map className="w-5 h-5" />
                   <span>Get Directions</span>
                 </a>
               </div>
@@ -126,8 +127,9 @@ const Contact = () => {
               ))}
             </div>
             <div className="mt-6 p-4 bg-yellow-50 border border-yellow-200 rounded-xl">
-              <p className="text-sm text-yellow-800">
-                ⏰ <span className="font-semibold">Note:</span> Store hours may vary during festivals and holidays.
+              <p className="text-sm text-yellow-800 flex items-center gap-2">
+                <AlertCircle className="w-4 h-4 flex-shrink-0" />
+                <span className="font-semibold">Note:</span> Store hours may vary during festivals and holidays.
               </p>
             </div>
           </div>
