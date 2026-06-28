@@ -30,10 +30,22 @@ const ProductDetailsCard = ({ product }) => {
           <h1 className="text-2xl md:text-3xl font-bold text-primary mb-4">
             {product.name}
           </h1>
-          <p className="text-3xl font-bold text-accent mb-6">
-            {formatPrice(product.price)}
-          </p>
-          <p className="text-gray-600 mb-8 leading-relaxed">
+          <div className="flex items-baseline gap-3 mb-4">
+            <span className="text-3xl font-bold text-[#2563EB]">
+              {formatPrice(product.price)}
+            </span>
+            {product.originalPrice && product.originalPrice > product.price && (
+              <span className="text-lg text-gray-400 line-through">
+                {formatPrice(product.originalPrice)}
+              </span>
+            )}
+          </div>
+          {product.brand && (
+            <p className="text-xs font-bold text-outline-variant uppercase tracking-widest mb-4">
+              Brand: <span className="text-primary font-black">{product.brand}</span>
+            </p>
+          )}
+          <p className="text-gray-650 mb-8 leading-relaxed">
             {product.description}
           </p>
           <div className="flex flex-wrap gap-4">

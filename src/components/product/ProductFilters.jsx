@@ -1,20 +1,20 @@
-import { CATEGORIES } from '../../utils/constants';
-
-const ProductFilters = ({ selectedCategory, onCategoryChange }) => {
+const ProductFilters = ({ categories = ['All'], selectedCategory, onCategoryChange }) => {
   return (
-    <div className="flex flex-wrap gap-2">
-      {CATEGORIES.map((category) => (
-        <button
-          key={category}
-          onClick={() => onCategoryChange(category)}
-          className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
-            selectedCategory === category
-              ? 'bg-secondary text-white'
-              : 'bg-white text-gray-700 border border-gray-300 hover:border-secondary hover:text-secondary'
-          }`}
-        >
-          {category}
-        </button>
+    <div className="mt-stack-sm space-y-3">
+      {categories.map((category) => (
+        <label key={category} className="flex items-center gap-3 cursor-pointer group py-1 select-none">
+          <input
+            type="checkbox"
+            checked={selectedCategory === category}
+            onChange={() => onCategoryChange(category)}
+            className="w-4 h-4 rounded border-outline text-primary focus:ring-primary cursor-pointer"
+          />
+          <span className={`font-body text-sm text-on-surface-variant group-hover:text-primary ${
+            selectedCategory === category ? 'font-semibold text-primary' : ''
+          }`}>
+            {category}
+          </span>
+        </label>
       ))}
     </div>
   );

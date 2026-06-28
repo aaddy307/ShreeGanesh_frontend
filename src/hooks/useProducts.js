@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import productService from '../services/productService';
 
-const useProducts = (page = 1, category = '', search = '') => {
+const useProducts = (page = 1, category = '', search = '', brand = '', sort = '') => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -11,7 +11,7 @@ const useProducts = (page = 1, category = '', search = '') => {
     const fetchProducts = async () => {
       try {
         setLoading(true);
-        const data = await productService.getProducts(page, 12, category, search);
+        const data = await productService.getProducts(page, 9, category, search, brand, false, sort);
         setProducts(data.products);
         setPagination({
           page: data.page,
@@ -26,7 +26,7 @@ const useProducts = (page = 1, category = '', search = '') => {
     };
 
     fetchProducts();
-  }, [page, category, search]);
+  }, [page, category, search, brand, sort]);
 
   return { products, loading, error, pagination };
 };

@@ -1,58 +1,70 @@
 import { Link } from 'react-router-dom';
 import { formatPrice, getImageUrl } from '../../utils/helpers';
 import { BUSINESS_INFO } from '../../utils/constants';
-import { MessageCircle } from 'lucide-react';
 
 const ProductCard = ({ product }) => {
   const handleWhatsAppOrder = (e) => {
     e.preventDefault();
-    const message = `Hi! I'm interested in buying:\n\n*${product.name}*\nPrice: ₹${product.price}\nCategory: ${product.category}`;
+    e.stopPropagation();
+    const message = `Hi! I'm interested in buying this product:\n\n*${product.name}*\nPrice: ₹${product.price}\nCategory: ${product.category}`;
     const waLink = `https://wa.me/${BUSINESS_INFO.whatsapp}?text=${encodeURIComponent(message)}`;
     window.open(waLink, '_blank');
   };
 
   return (
-    <Link
-      to={`/products/${product._id}`}
-      className="group relative bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 hover:-translate-y-2"
-    >
-      <div className="relative aspect-square overflow-hidden bg-gray-100">
+    <div className="group bg-surface-container-lowest rounded-lg border border-outline-variant overflow-hidden hover:-translate-y-1 transition-all duration-300 shadow-custom hover:shadow-custom-hover border-t-4 border-t-primary flex flex-col h-full">
+      <Link to={`/products/${product._id}`} className="relative aspect-square bg-surface-bright p-4 block overflow-hidden">
         <img
+          className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500"
           src={getImageUrl(product.image)}
           alt={product.name}
-          className="w-full h-full object-cover group-hover:scale-125 transition-transform duration-700"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-        
-        <div className="absolute top-3 left-3">
-          <span className="bg-accent text-white text-xs font-bold px-3 py-1 rounded-full">
-            {product.category}
+        {product.isNewProduct && (
+          <span className="absolute top-2 right-2 bg-error text-white text-[10px] font-bold px-2 py-1 rounded uppercase">
+            New
           </span>
+        )}
+      </Link>
+      <div className="p-4 flex flex-col justify-between flex-grow">
+        <div>
+          <p className="text-[10px] text-outline-variant mb-1 uppercase tracking-wider font-body font-semibold">
+            {product.category}
+          </p>
+          <Link to={`/products/${product._id}`} className="font-headline text-primary mb-2 font-bold line-clamp-2 hover:text-[#2563EB] transition-colors text-[15px]">
+            {product.name}
+          </Link>
         </div>
-
-        <div className="absolute bottom-4 left-4 right-4 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-4 group-hover:translate-y-0">
+        <div className="mt-auto pt-4 flex items-center justify-between">
+          <div className="flex flex-col">
+            <div className="flex items-baseline gap-2">
+              <span className="font-headline text-lg font-bold text-primary">
+                {formatPrice(product.price)}
+              </span>
+              {product.originalPrice && product.originalPrice > product.price && (
+                <span className="text-xs text-gray-400 line-through">
+                  {formatPrice(product.originalPrice)}
+                </span>
+              )}
+            </div>
+            {product.brand && (
+              <span className="text-[10px] text-outline-variant font-bold uppercase mt-0.5">
+                Brand: {product.brand}
+              </span>
+            )}
+          </div>
           <button
             onClick={handleWhatsAppOrder}
-            className="w-full bg-green-500 hover:bg-green-600 text-white font-semibold py-3 rounded-xl flex items-center justify-center gap-2 transition-colors"
+            className="p-2.5 rounded-full bg-[#25D366] text-white hover:bg-[#20ba5a] transition-all shadow-md active:scale-95 flex items-center justify-center border-none"
+            title="Order on WhatsApp"
+            aria-label="Order on WhatsApp"
           >
-            <MessageCircle className="w-5 h-5" />
-            Order on WhatsApp
+            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 448 512">
+              <path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L3 480l112.5-29.5c32.9 18 70.1 27.5 108.1 27.5h.1c122.3 0 222-99.6 222-222 0-59.3-23-115.1-64.8-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/>
+            </svg>
           </button>
         </div>
       </div>
-
-      <div className="p-4">
-        <h3 className="font-bold text-navy text-lg mb-2 group-hover:text-accent transition-colors duration-300 line-clamp-2">
-          {product.name}
-        </h3>
-        <div className="flex items-center justify-between">
-          <p className="text-2xl font-bold text-accent">{formatPrice(product.price)}</p>
-          <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
-            Free delivery
-          </span>
-        </div>
-      </div>
-    </Link>
+    </div>
   );
 };
 

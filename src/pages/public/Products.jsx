@@ -1,40 +1,77 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import ProductGrid from '../../components/product/ProductGrid';
-import ProductFilters from '../../components/product/ProductFilters';
-import SearchBar from '../../components/common/SearchBar';
 import useProducts from '../../hooks/useProducts';
-import { Gift } from 'lucide-react';
+import adminService from '../../services/adminService';
 
 const Products = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [category, setCategory] = useState(searchParams.get('category') || 'All');
+  const [brand, setBrand] = useState(searchParams.get('brand') || 'All');
+  const [sort, setSort] = useState(searchParams.get('sort') || 'newest');
   const [search, setSearch] = useState('');
   const [page, setPage] = useState(1);
-  const [visible, setVisible] = useState(false);
+  
+  const [categories, setCategories] = useState([]);
+  const [brands, setBrands] = useState([]);
 
-  const { products, loading, pagination } = useProducts(page, category, search);
-
-  useEffect(() => {
-    const timer = setTimeout(() => setVisible(true), 100);
-    return () => clearTimeout(timer);
-  }, []);
+  const { products, loading, pagination } = useProducts(page, category, search, brand, sort);
 
   useEffect(() => {
     const cat = searchParams.get('category');
-    if (cat) {
-      setCategory(cat);
-    }
+    const br = searchParams.get('brand');
+    const sr = searchParams.get('sort');
+    setCategory(cat || 'All');
+    setBrand(br || 'All');
+    setSort(sr || 'newest');
   }, [searchParams]);
+
+  useEffect(() => {
+    adminService.getCategories()
+      .then((data) => {
+        if (data && Array.isArray(data)) {
+          setCategories(data.map(c => c.name));
+        }
+      })
+      .catch(() => {});
+
+    adminService.getBrands()
+      .then((data) => {
+        if (data && Array.isArray(data)) {
+          setBrands(data.map(b => b.name));
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   const handleCategoryChange = (newCategory) => {
     setCategory(newCategory);
     setPage(1);
-    if (newCategory && newCategory !== 'All') {
-      setSearchParams({ category: newCategory });
-    } else {
-      setSearchParams({});
-    }
+    const newParams = {};
+    if (newCategory && newCategory !== 'All') newParams.category = newCategory;
+    if (brand && brand !== 'All') newParams.brand = brand;
+    if (sort && sort !== 'newest') newParams.sort = sort;
+    setSearchParams(newParams);
+  };
+
+  const handleBrandChange = (newBrand) => {
+    setBrand(newBrand);
+    setPage(1);
+    const newParams = {};
+    if (category && category !== 'All') newParams.category = category;
+    if (newBrand && newBrand !== 'All') newParams.brand = newBrand;
+    if (sort && sort !== 'newest') newParams.sort = sort;
+    setSearchParams(newParams);
+  };
+
+  const handleSortChange = (newSort) => {
+    setSort(newSort);
+    setPage(1);
+    const newParams = {};
+    if (category && category !== 'All') newParams.category = category;
+    if (brand && brand !== 'All') newParams.brand = brand;
+    if (newSort && newSort !== 'newest') newParams.sort = newSort;
+    setSearchParams(newParams);
   };
 
   const handleSearch = (query) => {
@@ -42,88 +79,132 @@ const Products = () => {
     setPage(1);
   };
 
+  const handleClearAll = () => {
+    setCategory('All');
+    setBrand('All');
+    setSort('newest');
+    setSearch('');
+    setPage(1);
+    setSearchParams({});
+  };
+
   return (
-    <main className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
-      <div className="relative bg-gradient-to-r from-navy via-navy to-secondary overflow-hidden">
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-0 left-0 w-72 h-72 bg-accent rounded-full blur-3xl"></div>
-          <div className="absolute bottom-0 right-0 w-96 h-96 bg-secondary rounded-full blur-3xl"></div>
+    <main className="max-w-[1200px] mx-auto px-4 md:px-12 py-16 min-h-screen">
+      
+      {/* Search and Filters Header Block */}
+      <div className="bg-white p-6 rounded-xl border border-outline-variant shadow-md mb-8 space-y-4">
+        <h1 className="font-headline text-2xl font-bold text-primary">Browse Our Catalog</h1>
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
+          
+          {/* 1st: Search Box */}
+          <div className="md:col-span-4 relative">
+            <input
+              type="text"
+              value={search}
+              onChange={(e) => handleSearch(e.target.value)}
+              placeholder="Search products, category, or brand..."
+              className="w-full pl-10 pr-4 py-3 rounded-lg border border-[#C0C8D8] focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all font-body text-sm"
+            />
+            <span className="material-symbols-outlined absolute left-3 top-3.5 text-gray-400 text-[20px]">
+              search
+            </span>
+          </div>
+
+          {/* 2nd: Category Dropdown */}
+          <div className="md:col-span-3">
+            <select
+              value={category}
+              onChange={(e) => handleCategoryChange(e.target.value)}
+              className="w-full px-4 py-3 rounded-lg border border-[#C0C8D8] focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all bg-white font-body text-sm"
+            >
+              <option value="All">All Categories</option>
+              {categories.map((cat) => (
+                <option key={cat} value={cat}>{cat}</option>
+              ))}
+            </select>
+          </div>
+
+          {/* 3rd: Brand Dropdown */}
+          <div className="md:col-span-3">
+            <select
+              value={brand}
+              onChange={(e) => handleBrandChange(e.target.value)}
+              className="w-full px-4 py-3 rounded-lg border border-[#C0C8D8] focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all bg-white font-body text-sm"
+            >
+              <option value="All">All Brands</option>
+              {brands.map((b) => (
+                <option key={b} value={b}>{b}</option>
+              ))}
+            </select>
+          </div>
+
+          {/* 4th: Sort Dropdown */}
+          <div className="md:col-span-2">
+            <select
+              value={sort}
+              onChange={(e) => handleSortChange(e.target.value)}
+              className="w-full px-4 py-3 rounded-lg border border-[#C0C8D8] focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all bg-white font-body text-sm"
+            >
+              <option value="newest">Newly Added</option>
+              <option value="priceAsc">Price: Low to High</option>
+              <option value="priceDesc">Price: High to Low</option>
+            </select>
+          </div>
         </div>
-        <div className="container-custom py-16 relative z-10">
-          <h1 className={`text-4xl md:text-5xl font-bold text-white text-center mb-4 transition-all duration-700 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-            Our Products
-          </h1>
-          <p className={`text-gray-300 text-center text-lg transition-all duration-700 delay-200 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-            Discover premium mobile accessories at unbeatable prices
+
+        {/* Clear and Stats Info */}
+        <div className="flex flex-wrap items-center justify-between pt-2 border-t border-outline-variant text-sm font-semibold">
+          <p className="text-on-surface-variant font-body">
+            Showing <span className="font-bold text-primary">{products.length}</span> products
           </p>
-          <div className={`flex justify-center mt-8 transition-all duration-700 delay-300 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-            <div className="bg-white/10 backdrop-blur-sm rounded-full px-6 py-3 flex items-center gap-2">
-              <Gift className="w-5 h-5 text-white" />
-              <span className="text-white text-sm font-medium">Free delivery on orders above ₹500</span>
-            </div>
-          </div>
+          <button
+            onClick={handleClearAll}
+            className="text-[#2563EB] hover:underline"
+          >
+            Clear Filters
+          </button>
         </div>
       </div>
 
-      <div className="container-custom -mt-8 relative z-20">
-        <div className={`bg-white rounded-2xl shadow-xl p-6 transition-all duration-500 delay-100 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-          <div className="flex flex-col lg:flex-row gap-8">
-            <div className="lg:w-1/4">
-              <div className="lg:sticky lg:top-8">
-                <h3 className="font-bold text-navy text-lg mb-4 flex items-center gap-2">
-                  <span className="w-1 h-6 bg-accent rounded-full"></span>
-                  Categories
-                </h3>
-                <ProductFilters
-                  selectedCategory={category}
-                  onCategoryChange={handleCategoryChange}
-                />
-              </div>
-            </div>
+      {/* Product Grid */}
+      <ProductGrid products={products} loading={loading} columns={3} />
 
-            <div className="lg:w-3/4">
-              <div className="mb-6">
-                <SearchBar onSearch={handleSearch} placeholder="Search products..." />
-              </div>
+      {/* Pagination */}
+      {!loading && pagination.pages > 1 && (
+        <div className="mt-12 flex items-center justify-center gap-2">
+          <button
+            disabled={page === 1}
+            onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
+            className="w-10 h-10 flex items-center justify-center rounded-lg border border-outline-variant text-primary hover:bg-primary hover:text-white transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+            aria-label="Previous Page"
+          >
+            <span className="material-symbols-outlined">chevron_left</span>
+          </button>
 
-              <div className="flex items-center justify-between mb-6">
-                <p className="text-gray-600">
-                  {loading ? 'Loading...' : `${products.length} products found`}
-                </p>
-                <div className="flex items-center gap-2">
-                  <span className="text-sm text-gray-500">Sort by:</span>
-                  <select className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-secondary focus:border-transparent">
-                    <option>Featured</option>
-                    <option>Price: Low to High</option>
-                    <option>Price: High to Low</option>
-                    <option>Newest</option>
-                  </select>
-                </div>
-              </div>
+          {Array.from({ length: pagination.pages }, (_, i) => i + 1).map((pageNum) => (
+            <button
+              key={pageNum}
+              onClick={() => setPage(pageNum)}
+              className={`w-10 h-10 flex items-center justify-center rounded-lg font-bold transition-all ${
+                page === pageNum
+                  ? 'bg-[#2563EB] text-white shadow-md'
+                  : 'border border-outline-variant text-primary hover:bg-surface-container-high'
+              }`}
+            >
+              {pageNum}
+            </button>
+          ))}
 
-              <ProductGrid products={products} loading={loading} columns={3} />
-
-              {pagination.pages > 1 && (
-                <div className="flex justify-center gap-2 mt-12">
-                  {Array.from({ length: pagination.pages }, (_, i) => i + 1).map((pageNum) => (
-                    <button
-                      key={pageNum}
-                      onClick={() => setPage(pageNum)}
-                      className={`w-10 h-10 rounded-full font-medium transition-all hover:scale-110 ${
-                        pagination.page === pageNum
-                          ? 'bg-navy text-white shadow-lg'
-                          : 'bg-white text-gray-700 border border-gray-300 hover:border-navy hover:bg-navy hover:text-white'
-                      }`}
-                    >
-                      {pageNum}
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
-          </div>
+          <button
+            disabled={page === pagination.pages}
+            onClick={() => setPage((prev) => Math.min(prev + 1, pagination.pages))}
+            className="w-10 h-10 flex items-center justify-center rounded-lg border border-outline-variant text-primary hover:bg-primary hover:text-white transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+            aria-label="Next Page"
+          >
+            <span className="material-symbols-outlined">chevron_right</span>
+          </button>
         </div>
-      </div>
+      )}
     </main>
   );
 };

@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -173,11 +175,11 @@ html {
 }
 
 .btn-primary {
-  @apply bg-accent text-white px-6 py-3 rounded-lg font-semibold hover:bg-orange-600 transition-all duration-300;
+  @apply bg-accent text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-all duration-300;
 }
 
 .btn-secondary {
-  @apply bg-secondary text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-600 transition-all duration-300;
+  @apply bg-secondary text-white px-6 py-3 rounded-lg font-semibold hover:bg-opacity-90 transition-all duration-300;
 }
 
 .card {
@@ -217,4 +219,37 @@ input:focus, select:focus, textarea:focus {
 
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
+}
+
+/* Custom B2B Styles from Stitch */
+.silver-text {
+  background: linear-gradient(to right, #C0C0C0 0%, #E8E8E8 50%, #C0C0C0 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.silver-badge {
+  background: linear-gradient(135deg, #E2E8F0 0%, #CBD5E1 100%);
+  color: #1e293b;
+}
+
+.hex-pattern {
+  background-color: transparent;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='49' viewBox='0 0 28 49'%3E%3Cg fill-rule='evenodd'%3E%3Cg id='hexagons' fill='%23142d63' fill-opacity='0.4' fill-rule='nonzero'%3E%3Cpath d='M13.99 9.25l13 7.5v15l-13 7.5L1 31.75v-15l12.99-7.5zM3 17.91v12.68l10.99 6.34L25 30.59V17.91l-11.01-6.34L3 17.91zM0 15l12.98-7.5V0h-2v6.35L0 12.69v2.31zm0 19l12.98 7.5V49h-2v-6.35L0 36.31v-2.31zm28-19L15.02 8.5V0h2v6.35L28 12.69v2.31zm0 19L15.02 41.5V49h2v-6.35L28 36.31v-2.31zM12.98 21.35v6.3L1 34.19v2.31l12.98-7.5 12.98 7.5v-2.31l-11.98-6.54v-6.3L28 12.68v-2.31L15.02 17.87V11.5h-2v6.37L0 10.37v-2.31l12.98 8.67z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+
+.marquee {
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.marquee-content {
+  display: inline-flex;
+  align-items: center;
+  animation: marquee 30s linear infinite;
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
 }
